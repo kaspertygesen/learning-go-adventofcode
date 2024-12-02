@@ -18,3 +18,9 @@ func TestPairLocationIds(t *testing.T) {
 
 	assert.Equal(t, pairs, []locationIdPair{{1, 3}, {2, 3}, {3, 3}, {3, 4}, {3, 5}, {4, 9}})
 }
+
+func TestSumDistance(t *testing.T) {
+	sum := sumDistance([]locationIdPair{{1, 3}, {2, 3}, {3, 3}, {3, 4}, {3, 5}, {4, 9}})
+
+	assert.Equal(t, sum, 11)
+}

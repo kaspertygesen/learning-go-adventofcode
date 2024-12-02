@@ -14,7 +14,19 @@ func main() {
 
 	pairs := pairLocationIds(left, right)
 
-	fmt.Print(pairs)
+	sum := sumDistance(pairs)
+
+	fmt.Print(sum)
+}
+
+func sumDistance(pairs []locationIdPair) int {
+	var sum int
+
+	for _, v := range pairs {
+		sum += v.distance()
+	}
+
+	return sum
 }
 
 func pairLocationIds(left, right []int) []locationIdPair {
@@ -70,5 +82,9 @@ type locationIdPair struct {
 }
 
 func (l *locationIdPair) distance() int {
-	return l.left - l.right
+	if d := l.left - l.right; d < 0 {
+		return -d
+	} else {
+		return d
+	}
 }
