@@ -16,7 +16,33 @@ func main() {
 
 	sum := sumDistance(pairs)
 
-	fmt.Print(sum)
+	fmt.Printf("Part 1: %d\n", sum)
+
+	groups := group(right)
+
+	score := similarityScore(left, groups)
+
+	fmt.Printf("Part 2: %d\n", score)
+}
+
+func similarityScore(left []int, groups map[int]int) int {
+	var score int
+
+	for _, v := range left {
+		score += v * groups[v]
+	}
+
+	return score
+}
+
+func group(arr []int) map[int]int {
+	groups := make(map[int]int)
+
+	for _, v := range arr {
+		groups[v]++
+	}
+
+	return groups
 }
 
 func sumDistance(pairs []locationIdPair) int {

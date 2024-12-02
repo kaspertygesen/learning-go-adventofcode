@@ -24,3 +24,23 @@ func TestSumDistance(t *testing.T) {
 
 	assert.Equal(t, sum, 11)
 }
+
+func TestGroup(t *testing.T) {
+	groups := group([]int{3, 4, 2, 1, 3, 3})
+
+	assert.Equal(t, groups[1], 1)
+	assert.Equal(t, groups[2], 1)
+	assert.Equal(t, groups[3], 3)
+	assert.Equal(t, groups[4], 1)
+}
+
+func TestSimilarityScore(t *testing.T) {
+	score := similarityScore([]int{3, 4, 2, 1, 3, 3}, map[int]int{
+		3: 3,
+		4: 1,
+		5: 1,
+		9: 1,
+	})
+
+	assert.Equal(t, score, 31)
+}
