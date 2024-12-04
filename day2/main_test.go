@@ -25,3 +25,19 @@ func TestEvaluateSafety(t *testing.T) {
 
 	assert.Equal(t, 2, numSafeReports)
 }
+
+func TestEvaluateSafetyWithDampener(t *testing.T) {
+	numSafeReports := evaluateSafetyWithDampener([][]int{
+		{7, 6, 4, 2, 1},
+		{1, 2, 7, 8, 9},
+		{9, 7, 6, 2, 1},
+		{1, 3, 2, 4, 5},
+		{8, 6, 4, 4, 1},
+		{1, 3, 6, 7, 9},
+		{67, 67, 69, 72, 75, 78, 81},
+		{67, 69, 72, 75, 78, 82},
+		{67, 69, 75, 72, 75, 76},
+	})
+
+	assert.Equal(t, 7, numSafeReports)
+}

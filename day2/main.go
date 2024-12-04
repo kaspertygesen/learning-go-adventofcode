@@ -13,29 +13,41 @@ func main() {
 
 	numSafeReports := evaluateSafety(reports)
 
-	fmt.Printf("Part 1: %d", numSafeReports)
+	fmt.Printf("Part 1: %d\n", numSafeReports)
+
+	numSafeReportsWithDampener := evaluateSafetyWithDampener(reports)
+
+	fmt.Printf("Part 2: %d\n", numSafeReportsWithDampener)
 }
 
-func evaluateSafety(reports [][]int) int {
+func evaluateSafetyWithDampener(reports [][]int) int {
 	var sum int
 
 	for _, r := range reports {
-		asc := r[0]-r[1] < 0
+		var safe = evaluateReport(r)
 
-		var prev int
-		safe := true
-		for i, l := range r {
-			if i != 0 {
-				diff := prev - l
+		if !safe {
+			for i, _ := range r {
+				if i == 0 {
+					s := r[1:]
 
-				if asc {
-					safe = safe && diff < 0 && diff >= -3
+					safe = evaluateReport(s)
+				} else if i == len(r)-1 {
+					s := r[:len(r)-1]
+
+					safe = evaluateReport(s)
 				} else {
-					safe = safe && diff > 0 && diff <= 3
+					var s []int
+					s = append(s, r[:i]...)
+					s = append(s, r[i+1:]...)
+
+					safe = evaluateReport(s)
+				}
+
+				if safe {
+					break
 				}
 			}
-
-			prev = l
 		}
 
 		if safe {
@@ -44,6 +56,38 @@ func evaluateSafety(reports [][]int) int {
 	}
 
 	return sum
+}
+
+func evaluateSafety(reports [][]int) int {
+	var sum int
+
+	for _, r := range reports {
+		safe := evaluateReport(r)
+
+		if safe {
+			sum++
+		}
+	}
+
+	return sum
+}
+
+func evaluateReport(report []int) bool {
+	asc := report[0]-report[1] < 0
+
+	var prev int
+	safe := true
+	for i, l := range report {
+		if i != 0 {
+			diff := prev - l
+
+			safe = safe && ((asc && diff < 0 && diff >= -3) || (!asc && diff > 0 && diff <= 3))
+		}
+
+		prev = l
+	}
+
+	return safe
 }
 
 func parseInputFile(path string) [][]int {
