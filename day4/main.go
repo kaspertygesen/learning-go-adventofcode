@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"regexp"
 	"strings"
 )
 
@@ -16,22 +15,59 @@ func main() {
 
 	fmt.Printf("Part 1: %d\n", part1)
 
-	fmt.Printf("Part 2: %d\n", 0)
+	part2 := xmas(input)
+
+	fmt.Printf("Part 2: %d\n", part2)
+}
+
+func xmas(input string) int {
+	lines := strings.Split(input, "\n")
+
+	sum := 0
+
+	for x := 0; x < len(lines[0]); x++ {
+		for y := 0; y < len(lines); y++ {
+			if lines[y][x] == 'A' && x > 0 && x < len(lines[0])-1 && y > 0 && y < len(lines)-1 {
+				s1 := string(lines[y-1][x-1]) + "A" + string(lines[y+1][x+1])
+				s2 := string(lines[y-1][x+1]) + "A" + string(lines[y+1][x-1])
+
+				if (s1 == "MAS" || s1 == "SAM") && (s2 == "SAM" || s2 == "MAS") {
+					sum++
+				}
+			}
+		}
+	}
+
+	return sum
 }
 
 func search(views []string) int {
-	pattern, err := regexp.Compile("(XMAS)|(SAMX)")
-
-	if err != nil {
-		panic(err)
-	}
-
 	var sum int
 
 	for _, v := range views {
-		matches := pattern.FindAllString(v, -1)
+		i := 0
+		for {
+			j := strings.Index(v[i:], "XMAS")
+			if j == -1 {
+				break
+			}
 
-		sum += len(matches)
+			sum++
+
+			i += j + 1
+		}
+
+		i = 0
+		for {
+			j := strings.Index(v[i:], "SAMX")
+			if j == -1 {
+				break
+			}
+
+			sum++
+
+			i += j + 1
+		}
 	}
 
 	return sum
@@ -42,7 +78,6 @@ func views(input string) []string {
 	views = append(views, input)
 
 	lines := strings.Split(input, "\n")
-	lines = lines[:len(lines)]
 
 	var verticalView []byte
 	for x := 0; x < len(lines[0]); x++ {

@@ -6,6 +6,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestXmas(t *testing.T) {
+	input := `MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX`
+
+	result := xmas(input)
+
+	assert.Equal(t, 9, result)
+}
+
 func TestSearch(t *testing.T) {
 	input := `MMMSXXMASM
 MSAMXMSMSA
