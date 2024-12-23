@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	"golang.org/x/exp/slices"
 )
 
 const (
@@ -22,9 +24,124 @@ func main() {
 
 	part1 := countVisitedPositions(positions)
 
-	fmt.Printf("Part 1: %d\n", part1)
+	part2 := countLoops(positions)
 
-	fmt.Printf("Part 2: %d\n", 0)
+	fmt.Printf("Part 1: %d\n", part1)
+	fmt.Printf("Part 2: %d\n", part2)
+}
+
+func countLoops(positions *[][]position) int {
+	loopCount := 0
+
+	for i := 0; i < len(*positions); i++ {
+		for j := 0; j < len((*positions)[i]); j++ {
+			p := &(*positions)[i][j]
+
+			if p.visited && p.symbol == '.' {
+				fmt.Printf("X: %d Y: %d\n", p.x, p.y)
+				p.symbol = '#'
+				isLoop := containsLoop(positions)
+
+				if isLoop {
+					loopCount++
+				}
+				p.symbol = '.'
+			}
+		}
+	}
+
+	return loopCount
+}
+
+func containsLoop(positions *[][]position) bool {
+	direction := up
+
+	var current *position
+
+	for i := 0; i < len(*positions); i++ {
+		for j := 0; j < len((*positions)[i]); j++ {
+			if (*positions)[i][j].symbol == '^' {
+				current = &(*positions)[i][j]
+			}
+		}
+	}
+
+	var steps []step
+
+	for {
+		steps = append(steps, step{x: current.x, y: current.y, direction: direction})
+		exit := false
+
+		switch direction {
+		case up:
+			if n := newDirection(current.up); n == 0 {
+				current = current.up
+			} else if n == 1 {
+				direction = right
+			} else {
+				exit = true
+			}
+		case right:
+			if n := newDirection(current.right); n == 0 {
+				current = current.right
+			} else if n == 1 {
+				direction = down
+			} else {
+				exit = true
+			}
+		case down:
+			if n := newDirection(current.down); n == 0 {
+				current = current.down
+			} else if n == 1 {
+				direction = left
+			} else {
+				exit = true
+			}
+		case left:
+			if n := newDirection(current.left); n == 0 {
+				current = current.left
+			} else if n == 1 {
+				direction = up
+			} else {
+				exit = true
+			}
+		}
+
+		if exit {
+			break
+		}
+
+		var indexes []int
+		for i := range steps {
+			if current.x == steps[i].x && current.y == steps[i].y && direction == steps[i].direction {
+				indexes = append(indexes, i)
+			}
+		}
+
+		if len(indexes) > 1 {
+			s1 := steps[indexes[len(indexes)-2]:indexes[len(indexes)-1]]
+			s2 := steps[indexes[len(indexes)-1]:]
+
+			if slices.Equal(s1, s2) {
+				fmt.Printf("Loop length: %d %d\n", len(s1), len(s2))
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func equal(p1, p2 []step) bool {
+	if len(p1) != len(p2) {
+		return false
+	}
+	for i := range p1 {
+		if p1[i].x != p2[i].x || p1[i].y != p2[i].y || p1[i].direction != p2[i].direction {
+			return false
+		}
+	}
+	return true
 }
 
 func countVisitedPositions(positions *[][]position) int {
@@ -64,7 +181,6 @@ func patrol(positions *[][]position) {
 			if n := newDirection(current.up); n == 0 {
 				current = current.up
 			} else if n == 1 {
-				current = current.right
 				direction = right
 			} else {
 				exit = true
@@ -73,7 +189,6 @@ func patrol(positions *[][]position) {
 			if n := newDirection(current.right); n == 0 {
 				current = current.right
 			} else if n == 1 {
-				current = current.down
 				direction = down
 			} else {
 				exit = true
@@ -82,7 +197,6 @@ func patrol(positions *[][]position) {
 			if n := newDirection(current.down); n == 0 {
 				current = current.down
 			} else if n == 1 {
-				current = current.left
 				direction = left
 			} else {
 				exit = true
@@ -91,7 +205,6 @@ func patrol(positions *[][]position) {
 			if n := newDirection(current.left); n == 0 {
 				current = current.left
 			} else if n == 1 {
-				current = current.up
 				direction = up
 			} else {
 				exit = true
@@ -186,4 +299,11 @@ type position struct {
 
 	x int
 	y int
+}
+
+type step struct {
+	x int
+	y int
+
+	direction int
 }
