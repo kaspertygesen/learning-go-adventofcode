@@ -7,6 +7,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestConcatNumbers(t *testing.T) {
+	assert.Equal(t, int64(11), concatNumbers(1, 1))
+	assert.Equal(t, int64(1234), concatNumbers(123, 4))
+}
+
 func TestEvaluateEquations(t *testing.T) {
 	equations := parseInputFile("test_input.txt")
 

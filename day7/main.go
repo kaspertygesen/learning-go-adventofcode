@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"slices"
 	"strconv"
@@ -17,7 +18,12 @@ func main() {
 	part1 := sumResults(validEquations)
 
 	fmt.Printf("Part 1: %d\n", part1)
-	fmt.Printf("Part 2: %d\n", 0)
+
+	validEquations2 := evaluateEquations2(equations)
+
+	part2 := sumResults(validEquations2)
+
+	fmt.Printf("Part 2: %d\n", part2)
 }
 
 func sumResults(equations *[]equation) int64 {
@@ -28,6 +34,62 @@ func sumResults(equations *[]equation) int64 {
 	}
 
 	return sum
+}
+
+func evaluateEquations2(equations *[]equation) *[]equation {
+	var validEquations []equation
+
+	maxLength := 0
+	for _, e := range *equations {
+		if l := len(e.numbers); maxLength < l {
+			maxLength = l
+		}
+	}
+
+	var combinations []string
+	generateCombinations2("", maxLength-1, "+*|", &combinations)
+
+	for _, e := range *equations {
+		for _, c := range combinations {
+			operators := c[:len(e.numbers)-1]
+
+			result := e.numbers[0]
+
+			for i, n := range e.numbers[1:] {
+				switch operators[i] {
+				case '+':
+					result += n
+				case '*':
+					result *= n
+				case '|':
+					result = concatNumbers(result, n)
+				}
+			}
+
+			if result == e.result {
+				validEquations = append(validEquations, e)
+				break
+			}
+		}
+	}
+
+	return &validEquations
+}
+
+func concatNumbers(n1, n2 int64) int64 {
+	return n1*int64(math.Pow10(int(math.Log10(float64(n2))+1))) + n2
+}
+
+func generateCombinations2(s string, d int, operators string, combinations *[]string) {
+	for _, o := range operators {
+		if d != 0 {
+			generateCombinations(s+string(o), d-1, operators, combinations)
+		}
+	}
+
+	if d == 0 {
+		*combinations = append(*combinations, s)
+	}
 }
 
 func evaluateEquations(equations *[]equation) *[]equation {
