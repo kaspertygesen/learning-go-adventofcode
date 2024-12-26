@@ -7,6 +7,29 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestCountAntinodes2(t *testing.T) {
+	locations := parseInputFile("test_input.txt")
+
+	markAntinodes2(locations)
+
+	count := countAntinodes(locations)
+
+	for y := range *locations {
+		for x := range (*locations)[y] {
+			location := (*locations)[y][x]
+
+			if location.isAntinode {
+				fmt.Print("#")
+			} else {
+				fmt.Print(string(location.frequency))
+			}
+		}
+		fmt.Print("\n")
+	}
+
+	assert.Equal(t, 34, count)
+}
+
 func TestCountAntinodes(t *testing.T) {
 	locations := parseInputFile("test_input.txt")
 
