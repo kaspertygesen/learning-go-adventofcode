@@ -9,7 +9,15 @@ import (
 func TestFindPaths(t *testing.T) {
 	input := parseInputFile("test_input.txt")
 
-	count := findPaths(input)
+	count := findPaths(input, false)
+
+	assert.Equal(t, 81, count)
+}
+
+func TestFindPathsDistinct(t *testing.T) {
+	input := parseInputFile("test_input.txt")
+
+	count := findPaths(input, true)
 
 	assert.Equal(t, 36, count)
 }
@@ -17,7 +25,7 @@ func TestFindPaths(t *testing.T) {
 func TestEvaluateTrailhead(t *testing.T) {
 	input := parseInputFile("test_input.txt")
 
-	tops := evaluateTrailhead(input, 2, 0)
+	tops := evaluateTrailhead(input, 2, 0, true)
 
 	assert.Contains(t, tops, coordinate{4, 3})
 	assert.Contains(t, tops, coordinate{0, 3})

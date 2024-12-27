@@ -28,8 +28,6 @@ func findPaths(terrainMap *[][]int, distrinct bool) int {
 			if height == 0 {
 				tops := evaluateTrailhead(terrainMap, x, y, distrinct)
 
-				fmt.Println(len(tops))
-
 				count += len(tops)
 			}
 		}
