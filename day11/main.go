@@ -23,7 +23,7 @@ func main() {
 	sum := 0
 
 	for _, stone := range input {
-		sum += blinkRecursive(stone, 75, &cache)
+		sum += blinkRecursive(stone, 75, cache)
 	}
 
 	part2 := sum
@@ -36,14 +36,14 @@ type pair struct {
 	l int
 }
 
-func blinkRecursive(n, remainingBlinks int, cache *map[pair]int) int {
+func blinkRecursive(n, remainingBlinks int, cache map[pair]int) int {
 	if remainingBlinks == 0 {
 		return 1
 	}
 
 	r := 0
 
-	if cr, ok := (*cache)[pair{n, remainingBlinks}]; ok {
+	if cr, ok := cache[pair{n, remainingBlinks}]; ok {
 		return cr
 	} else if n == 0 {
 		r = blinkRecursive(1, remainingBlinks-1, cache)
@@ -57,7 +57,7 @@ func blinkRecursive(n, remainingBlinks int, cache *map[pair]int) int {
 		r = blinkRecursive(n*2024, remainingBlinks-1, cache)
 	}
 
-	(*cache)[pair{n, remainingBlinks}] = r
+	cache[pair{n, remainingBlinks}] = r
 
 	return r
 }

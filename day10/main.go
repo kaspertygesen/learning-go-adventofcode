@@ -18,12 +18,12 @@ func main() {
 	fmt.Printf("Part 2: %d\n", part2)
 }
 
-func findPaths(terrainMap *[][]int, distrinct bool) int {
+func findPaths(terrainMap [][]int, distrinct bool) int {
 	count := 0
 
-	for y := 0; y < len(*terrainMap); y++ {
-		for x := 0; x < len((*terrainMap)[y]); x++ {
-			height := (*terrainMap)[y][x]
+	for y := 0; y < len(terrainMap); y++ {
+		for x := 0; x < len(terrainMap[y]); x++ {
+			height := terrainMap[y][x]
 
 			if height == 0 {
 				tops := evaluateTrailhead(terrainMap, x, y, distrinct)
@@ -36,19 +36,19 @@ func findPaths(terrainMap *[][]int, distrinct bool) int {
 	return count
 }
 
-func evaluateTrailhead(terrainMap *[][]int, x, y int, distrinct bool) []coordinate {
-	height := (*terrainMap)[y][x]
+func evaluateTrailhead(terrainMap [][]int, x, y int, distrinct bool) []coordinate {
+	height := terrainMap[y][x]
 
 	var tops []coordinate
 
 	if yu := y - 1; yu >= 0 {
 		tops = append(tops, evaluateNext(terrainMap, height, x, yu, distrinct)...)
 	}
-	if yd := y + 1; yd < len(*terrainMap) {
+	if yd := y + 1; yd < len(terrainMap) {
 		tops = append(tops, evaluateNext(terrainMap, height, x, yd, distrinct)...)
 	}
 
-	if xr := x + 1; xr < len(*terrainMap) {
+	if xr := x + 1; xr < len(terrainMap) {
 		tops = append(tops, evaluateNext(terrainMap, height, xr, y, distrinct)...)
 	}
 	if xl := x - 1; xl >= 0 {
@@ -72,8 +72,8 @@ func evaluateTrailhead(terrainMap *[][]int, x, y int, distrinct bool) []coordina
 	return distinctTops
 }
 
-func evaluateNext(terrainMap *[][]int, height int, x, y int, distrinct bool) []coordinate {
-	if nextHeight := &(*terrainMap)[y][x]; *nextHeight == 9 && height == 8 {
+func evaluateNext(terrainMap [][]int, height int, x, y int, distrinct bool) []coordinate {
+	if nextHeight := &terrainMap[y][x]; *nextHeight == 9 && height == 8 {
 		return []coordinate{{x, y}}
 	} else if *nextHeight == height+1 {
 		return evaluateTrailhead(terrainMap, x, y, distrinct)
@@ -82,7 +82,7 @@ func evaluateNext(terrainMap *[][]int, height int, x, y int, distrinct bool) []c
 	}
 }
 
-func parseInputFile(path string) *[][]int {
+func parseInputFile(path string) [][]int {
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -105,7 +105,7 @@ func parseInputFile(path string) *[][]int {
 		terrainMap = append(terrainMap, numbers)
 	}
 
-	return &terrainMap
+	return terrainMap
 }
 
 type coordinate struct {

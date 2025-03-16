@@ -26,21 +26,21 @@ func main() {
 	fmt.Printf("Part 2: %d\n", part2)
 }
 
-func sumResults(equations *[]equation) int64 {
+func sumResults(equations []equation) int64 {
 	var sum int64 = 0
 
-	for _, e := range *equations {
+	for _, e := range equations {
 		sum += e.result
 	}
 
 	return sum
 }
 
-func evaluateEquations2(equations *[]equation) *[]equation {
+func evaluateEquations2(equations []equation) []equation {
 	var validEquations []equation
 
 	maxLength := 0
-	for _, e := range *equations {
+	for _, e := range equations {
 		if l := len(e.numbers); maxLength < l {
 			maxLength = l
 		}
@@ -49,7 +49,7 @@ func evaluateEquations2(equations *[]equation) *[]equation {
 	var combinations []string
 	generateCombinations2("", maxLength-1, "+*|", &combinations)
 
-	for _, e := range *equations {
+	for _, e := range equations {
 		for _, c := range combinations {
 			operators := c[:len(e.numbers)-1]
 
@@ -73,7 +73,7 @@ func evaluateEquations2(equations *[]equation) *[]equation {
 		}
 	}
 
-	return &validEquations
+	return validEquations
 }
 
 func concatNumbers(n1, n2 int64) int64 {
@@ -92,11 +92,11 @@ func generateCombinations2(s string, d int, operators string, combinations *[]st
 	}
 }
 
-func evaluateEquations(equations *[]equation) *[]equation {
+func evaluateEquations(equations []equation) []equation {
 	var validEquations []equation
 
 	maxLength := 0
-	for _, e := range *equations {
+	for _, e := range equations {
 		if l := len(e.numbers); maxLength < l {
 			maxLength = l
 		}
@@ -105,7 +105,7 @@ func evaluateEquations(equations *[]equation) *[]equation {
 	var combinations []string
 	generateCombinations("", maxLength-1, "+*", &combinations)
 
-	for _, e := range *equations {
+	for _, e := range equations {
 		if !slices.ContainsFunc(e.numbers, func(n int64) bool { return n < 2 }) {
 			var sum int64 = 0
 			var product int64 = 1
@@ -148,7 +148,7 @@ func evaluateEquations(equations *[]equation) *[]equation {
 		}
 	}
 
-	return &validEquations
+	return validEquations
 }
 
 func generateCombinations(s string, d int, operators string, combinations *[]string) {
@@ -163,7 +163,7 @@ func generateCombinations(s string, d int, operators string, combinations *[]str
 	}
 }
 
-func parseInputFile(path string) *[]equation {
+func parseInputFile(path string) []equation {
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -194,7 +194,7 @@ func parseInputFile(path string) *[]equation {
 		equations = append(equations, equation{result: int64(result), numbers: numbers})
 	}
 
-	return &equations
+	return equations
 }
 
 func parseInt64(str string) (i int64, err error) {

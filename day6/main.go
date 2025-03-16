@@ -30,12 +30,12 @@ func main() {
 	fmt.Printf("Part 2: %d\n", part2)
 }
 
-func countLoops(positions *[][]position) int {
+func countLoops(positions [][]position) int {
 	loopCount := 0
 
-	for i := 0; i < len(*positions); i++ {
-		for j := 0; j < len((*positions)[i]); j++ {
-			p := &(*positions)[i][j]
+	for i := 0; i < len(positions); i++ {
+		for j := 0; j < len(positions[i]); j++ {
+			p := &positions[i][j]
 
 			if p.visited && p.symbol == '.' {
 				fmt.Printf("X: %d Y: %d\n", p.x, p.y)
@@ -53,15 +53,15 @@ func countLoops(positions *[][]position) int {
 	return loopCount
 }
 
-func containsLoop(positions *[][]position) bool {
+func containsLoop(positions [][]position) bool {
 	direction := up
 
 	var current *position
 
-	for i := 0; i < len(*positions); i++ {
-		for j := 0; j < len((*positions)[i]); j++ {
-			if (*positions)[i][j].symbol == '^' {
-				current = &(*positions)[i][j]
+	for i := 0; i < len(positions); i++ {
+		for j := 0; j < len(positions[i]); j++ {
+			if positions[i][j].symbol == '^' {
+				current = &positions[i][j]
 			}
 		}
 	}
@@ -144,12 +144,12 @@ func equal(p1, p2 []step) bool {
 	return true
 }
 
-func countVisitedPositions(positions *[][]position) int {
+func countVisitedPositions(positions [][]position) int {
 	count := 0
 
-	for i := 0; i < len(*positions); i++ {
-		for j := 0; j < len((*positions)[i]); j++ {
-			if (*positions)[i][j].visited {
+	for i := 0; i < len(positions); i++ {
+		for j := 0; j < len(positions[i]); j++ {
+			if positions[i][j].visited {
 				count++
 			}
 		}
@@ -158,15 +158,15 @@ func countVisitedPositions(positions *[][]position) int {
 	return count
 }
 
-func patrol(positions *[][]position) {
+func patrol(positions [][]position) {
 	direction := up
 
 	var current *position
 
-	for i := 0; i < len(*positions); i++ {
-		for j := 0; j < len((*positions)[i]); j++ {
-			if (*positions)[i][j].symbol == '^' {
-				current = &(*positions)[i][j]
+	for i := 0; i < len(positions); i++ {
+		for j := 0; j < len(positions[i]); j++ {
+			if positions[i][j].symbol == '^' {
+				current = &positions[i][j]
 			}
 		}
 	}
@@ -228,14 +228,14 @@ func newDirection(next *position) int {
 	return 0
 }
 
-func linkPositions(labMap *[]string) *[][]position {
-	positions := make([][]position, len(*labMap))
+func linkPositions(labMap []string) [][]position {
+	positions := make([][]position, len(labMap))
 
 	for i := range positions {
-		positions[i] = make([]position, len((*labMap)[0]))
+		positions[i] = make([]position, len(labMap[0]))
 	}
 
-	for i, row := range *labMap {
+	for i, row := range labMap {
 		for j, p := range row {
 			positions[i][j] = position{
 				symbol: p,
@@ -264,10 +264,10 @@ func linkPositions(labMap *[]string) *[][]position {
 		}
 	}
 
-	return &positions
+	return positions
 }
 
-func parseInputFile(path string) *[]string {
+func parseInputFile(path string) []string {
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -284,7 +284,7 @@ func parseInputFile(path string) *[]string {
 		labMap = append(labMap, line)
 	}
 
-	return &labMap
+	return labMap
 }
 
 type position struct {

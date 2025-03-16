@@ -21,7 +21,7 @@ func TestContainsLoop97(t *testing.T) {
 
 	patrol(positions)
 
-	(*positions)[9][7].symbol = '#'
+	positions[9][7].symbol = '#'
 
 	isLoop := containsLoop(positions)
 
@@ -33,7 +33,7 @@ func TestContainsLoop81(t *testing.T) {
 
 	patrol(positions)
 
-	(*positions)[8][1].symbol = '#'
+	positions[8][1].symbol = '#'
 
 	isLoop := containsLoop(positions)
 
@@ -45,7 +45,7 @@ func TestContainsLoop77(t *testing.T) {
 
 	patrol(positions)
 
-	(*positions)[7][7].symbol = '#'
+	positions[7][7].symbol = '#'
 
 	isLoop := containsLoop(positions)
 
@@ -57,7 +57,7 @@ func TestContainsLoop76(t *testing.T) {
 
 	patrol(positions)
 
-	(*positions)[7][6].symbol = '#'
+	positions[7][6].symbol = '#'
 
 	isLoop := containsLoop(positions)
 
@@ -69,7 +69,7 @@ func TestContainsLoop63(t *testing.T) {
 
 	patrol(positions)
 
-	(*positions)[6][3].symbol = '#'
+	positions[6][3].symbol = '#'
 
 	isLoop := containsLoop(positions)
 
@@ -81,9 +81,9 @@ func TestPatrolAlgorithm2(t *testing.T) {
 
 	patrol(positions)
 
-	assert.True(t, (*positions)[1][4].visited)
-	assert.False(t, (*positions)[1][5].visited)
-	assert.True(t, (*positions)[9][4].visited)
+	assert.True(t, positions[1][4].visited)
+	assert.False(t, positions[1][5].visited)
+	assert.True(t, positions[9][4].visited)
 }
 
 func TestPatrolAlgorithm(t *testing.T) {
@@ -91,21 +91,21 @@ func TestPatrolAlgorithm(t *testing.T) {
 
 	patrol(positions)
 
-	assert.True(t, (*positions)[1][4].visited)
-	assert.True(t, (*positions)[1][5].visited)
-	assert.True(t, (*positions)[1][8].visited)
-	assert.True(t, (*positions)[3][8].visited)
-	assert.True(t, (*positions)[4][6].visited)
-	assert.True(t, (*positions)[9][7].visited)
+	assert.True(t, positions[1][4].visited)
+	assert.True(t, positions[1][5].visited)
+	assert.True(t, positions[1][8].visited)
+	assert.True(t, positions[3][8].visited)
+	assert.True(t, positions[4][6].visited)
+	assert.True(t, positions[9][7].visited)
 }
 
 func TestGraph(t *testing.T) {
 	labMap := parseInputFile("test_input.txt")
 	positions := linkPositions(labMap)
 
-	assert.Equal(t, '#', (*positions)[0][4].symbol)
-	assert.Equal(t, '.', (*positions)[0][4].down.symbol)
-	assert.Equal(t, '.', (*positions)[5][4].symbol)
-	assert.Equal(t, '^', (*positions)[5][4].down.symbol)
-	assert.Equal(t, (*positions)[5][4], *(*positions)[5][4].down.up)
+	assert.Equal(t, '#', positions[0][4].symbol)
+	assert.Equal(t, '.', positions[0][4].down.symbol)
+	assert.Equal(t, '.', positions[5][4].symbol)
+	assert.Equal(t, '^', positions[5][4].down.symbol)
+	assert.Equal(t, positions[5][4], *positions[5][4].down.up)
 }

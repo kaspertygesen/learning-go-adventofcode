@@ -25,23 +25,23 @@ func main() {
 	fmt.Printf("Part 2: %d\n", part2)
 }
 
-func compact2(blocks *[]block) {
-	swapF := reflect.Swapper(*blocks)
+func compact2(blocks []block) {
+	swapF := reflect.Swapper(blocks)
 
-	for i := len(*blocks) - 1; i >= 0; i-- {
-		b := &(*blocks)[i]
+	for i := len(blocks) - 1; i >= 0; i-- {
+		b := &blocks[i]
 
 		if b.empty {
 			continue
 		}
 
 		emptySize := 0
-		for iEmpty := 0; iEmpty < len(*blocks); iEmpty++ {
+		for iEmpty := 0; iEmpty < len(blocks); iEmpty++ {
 			if iEmpty >= i {
 				break
 			}
 
-			if (*blocks)[iEmpty].empty {
+			if blocks[iEmpty].empty {
 				emptySize++
 			} else {
 				emptySize = 0
@@ -59,10 +59,10 @@ func compact2(blocks *[]block) {
 	}
 }
 
-func discMapToString(discMap *[]block) string {
+func discMapToString(discMap []block) string {
 	var discMapStr string
 
-	for _, b := range *discMap {
+	for _, b := range discMap {
 		if !b.empty {
 			discMapStr += strconv.Itoa(b.id)
 		} else {
@@ -73,30 +73,30 @@ func discMapToString(discMap *[]block) string {
 	return discMapStr
 }
 
-func checksum(blocks *[]block) int {
+func checksum(blocks []block) int {
 	sum := 0
 
-	for i, b := range *blocks {
+	for i, b := range blocks {
 		sum += i * b.id
 	}
 
 	return sum
 }
 
-func compact(blocks *[]block) {
-	swapF := reflect.Swapper(*blocks)
+func compact(blocks []block) {
+	swapF := reflect.Swapper(blocks)
 
 	iEmpty := 0
 
-	for i := len(*blocks) - 1; i >= 0; i-- {
-		b := &(*blocks)[i]
+	for i := len(blocks) - 1; i >= 0; i-- {
+		b := &blocks[i]
 
 		if b.empty {
 			continue
 		}
 
-		for ; iEmpty < len(*blocks); iEmpty++ {
-			if iEmpty < i && (*blocks)[iEmpty].empty {
+		for ; iEmpty < len(blocks); iEmpty++ {
+			if iEmpty < i && blocks[iEmpty].empty {
 				swapF(i, iEmpty)
 				iEmpty++
 				break
@@ -109,7 +109,7 @@ func compact(blocks *[]block) {
 	}
 }
 
-func mapDisc(input string) *[]block {
+func mapDisc(input string) []block {
 	var discMap []block
 
 	fileId := 0
@@ -127,7 +127,7 @@ func mapDisc(input string) *[]block {
 		}
 	}
 
-	return &discMap
+	return discMap
 }
 
 func parseInputFile(path string) string {

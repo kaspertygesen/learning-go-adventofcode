@@ -18,10 +18,10 @@ func main() {
 	fmt.Printf("Part 2: %d\n", part2)
 }
 
-func play(machines *[]machine) int {
+func play(machines []machine) int {
 	count := 0
 
-	for _, machine := range *machines {
+	for _, machine := range machines {
 		for a := 0; a*machine.a.x < machine.x || a*machine.a.y < machine.y; a++ {
 			ax := a * machine.a.x
 			ay := a * machine.a.y
@@ -47,7 +47,7 @@ var aRegex *regexp.Regexp = regexp.MustCompile(`Button\sA:\sX\+(?<x>\d+?),\sY\+(
 var bRegex *regexp.Regexp = regexp.MustCompile(`Button\sB:\sX\+(?<x>\d+?),\sY\+(?<y>\d+)`)
 var prizeRegex *regexp.Regexp = regexp.MustCompile(`Prize:\sX=(?<x>\d+?),\sY=(?<y>\d+)`)
 
-func parseInputFile(path string) *[]machine {
+func parseInputFile(path string) []machine {
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -87,7 +87,7 @@ func parseInputFile(path string) *[]machine {
 		}
 	}
 
-	return &machines
+	return machines
 }
 
 type machine struct {

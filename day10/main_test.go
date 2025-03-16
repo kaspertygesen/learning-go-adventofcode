@@ -38,7 +38,7 @@ func TestEvaluateTrailhead(t *testing.T) {
 func TestParseInput(t *testing.T) {
 	input := parseInputFile("test_input.txt")
 
-	assert.Equal(t, 8, (*input)[0][0])
-	assert.Equal(t, 1, (*input)[5][3])
-	assert.Equal(t, 2, (*input)[7][7])
+	assert.Equal(t, 8, input[0][0])
+	assert.Equal(t, 1, input[5][3])
+	assert.Equal(t, 2, input[7][7])
 }

@@ -83,12 +83,12 @@ func sum(groups [][]region) int {
 	return sum
 }
 
-func group(garden *[][]region) [][]region {
+func group(garden [][]region) [][]region {
 	var groups [][]region
 
-	for y := 0; y < len(*garden); y++ {
-		for x := 0; x < len((*garden)[y]); x++ {
-			r := &(*garden)[y][x]
+	for y := 0; y < len(garden); y++ {
+		for x := 0; x < len(garden[y]); x++ {
+			r := &garden[y][x]
 
 			if r.visited {
 				continue
@@ -106,8 +106,8 @@ func group(garden *[][]region) [][]region {
 	return groups
 }
 
-func search(garden *[][]region, p string, x, y int, group *[]region) bool {
-	r := &(*garden)[y][x]
+func search(garden [][]region, p string, x, y int, group *[]region) bool {
+	r := &garden[y][x]
 
 	if r.visited {
 		return r.plant == p
@@ -139,7 +139,7 @@ func search(garden *[][]region, p string, x, y int, group *[]region) bool {
 			edges = append(edges, edge{direction: up, position: y, value: x})
 		}
 
-		if nx := x + 1; nx < len((*garden)[0]) {
+		if nx := x + 1; nx < len(garden[0]) {
 			if search(garden, p, nx, y, group) {
 				fences--
 			} else {
@@ -149,7 +149,7 @@ func search(garden *[][]region, p string, x, y int, group *[]region) bool {
 			edges = append(edges, edge{direction: right, position: x, value: y})
 		}
 
-		if ny := y + 1; ny < len((*garden)[0]) {
+		if ny := y + 1; ny < len(garden[0]) {
 			if search(garden, p, x, ny, group) {
 				fences--
 			} else {
@@ -170,16 +170,16 @@ func search(garden *[][]region, p string, x, y int, group *[]region) bool {
 	}
 }
 
-func addCoordinates(garden *[][]region) {
-	for y := 0; y < len(*garden); y++ {
-		for x := 0; x < len((*garden)[y]); x++ {
-			(*garden)[y][x].x = x
-			(*garden)[y][x].y = y
+func addCoordinates(garden [][]region) {
+	for y := 0; y < len(garden); y++ {
+		for x := 0; x < len(garden[y]); x++ {
+			garden[y][x].x = x
+			garden[y][x].y = y
 		}
 	}
 }
 
-func parseInputFile(path string) *[][]region {
+func parseInputFile(path string) [][]region {
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -206,7 +206,7 @@ func parseInputFile(path string) *[][]region {
 		garden = append(garden, regions)
 	}
 
-	return &garden
+	return garden
 }
 
 type region struct {

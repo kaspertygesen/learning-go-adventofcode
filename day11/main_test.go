@@ -16,7 +16,7 @@ func TestBlinkRecursive(t *testing.T) {
 	sum := 0
 
 	for _, s := range []int{125, 17} {
-		sum += blinkRecursive(s, blinks, &cache)
+		sum += blinkRecursive(s, blinks, cache)
 	}
 
 	assert.Equal(t, 22, sum)
